@@ -1,0 +1,12 @@
+
+M   M          BBBB          k        h        l  ff
+MM MM          B   B         k k      h        l  f
+M M M y  y     BBBB  ooo ooo kk    ss hhh  eee l fff
+M   M y  y     B   B o o o o k k   s  h  h e e l  f
+M   M  yyy     BBBB  ooo ooo k  k ss  h  h ee  l  f
+         y
+      yyy
+
+AppTitle: ${application.title}
+Version: ${application.version}
+Spring Boot Version: ${spring-boot.version}
