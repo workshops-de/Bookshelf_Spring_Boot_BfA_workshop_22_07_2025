@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(ConstraintViolationException.class)
   public ProblemDetail handleConstraintViolationException(ConstraintViolationException ex) {
     var problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
-    problemDetail.setTitle("Constraint violation");
+    problemDetail.setTitle("Constraint Violation");
     return problemDetail;
   }
 }
