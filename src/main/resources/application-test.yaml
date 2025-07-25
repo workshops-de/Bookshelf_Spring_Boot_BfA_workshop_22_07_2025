@@ -1,0 +1,5 @@
+application:
+  title: '${application.name:Buchregal} im Profil test'
+  profile: 'Test'
+server:
+  port: 8081

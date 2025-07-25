@@ -1,7 +1,6 @@
 package de.workshops.bookshelf.books;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -39,7 +38,7 @@ public class BookRestController {
   }
 
   @GetMapping(params = "author")
-  public List<Book> getBooksByAuthor(@RequestParam(name = "author") @NotBlank String anAuthor) {
+  public List<Book> getBooksByAuthor(@RequestParam(name = "author", required = false) String anAuthor) {
     return bookService.getBooksByAuthor(anAuthor);
   }
 

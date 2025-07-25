@@ -1,0 +1,13 @@
+application:
+  name: 'Bookshelf'
+  title: '@project.name@'
+  version: '@project.version@'
+  profile: 'Default'
+
+swagger:
+  title: "Bookshelf API"
+  description: 'Description'
+  capacity: 1000
+  license:
+    name: 'MIT License'
+    url: 'http://example.com'

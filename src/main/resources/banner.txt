@@ -9,4 +9,5 @@ M   M  yyy     BBBB  ooo ooo k  k ss  h  h ee  l  f
 
 AppTitle: ${application.title}
 Version: ${application.version}
+Profile: ${application.profile}
 Spring Boot Version: ${spring-boot.version}
