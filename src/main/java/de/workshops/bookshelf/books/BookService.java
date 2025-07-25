@@ -34,4 +34,8 @@ public class BookService {
         .filter(b -> b.getIsbn().equals(request.isbn()) || b.getAuthor().contains(request.author()))
         .toList();
   }
+
+  public Book createBook(Book book) {
+    return bookRepository.saveBook(book);
+  }
 }

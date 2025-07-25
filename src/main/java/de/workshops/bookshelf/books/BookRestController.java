@@ -3,8 +3,6 @@ package de.workshops.bookshelf.books;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -48,6 +46,11 @@ public class BookRestController {
   @PostMapping("/search")
   List<Book> search(@RequestBody @Valid BookSearchRequest request) {
     return bookService.searchBooks(request);
+  }
+
+  @PostMapping
+  Book createBook(@RequestBody @Valid Book book) {
+    return bookService.createBook(book);
   }
 
   @ExceptionHandler(BookException.class)

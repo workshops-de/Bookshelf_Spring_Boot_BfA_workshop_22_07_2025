@@ -7,6 +7,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -15,9 +16,12 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -102,5 +106,35 @@ class BookRestControllerMockMvcWithMockitoTest {
     var responseBody = mvcResult.getResponse().getContentAsString();
     ProblemDetail problemDetail = objectMapper.readValue(responseBody, ProblemDetail.class);
     assertThat(problemDetail.getTitle()).isEqualTo("Constraint Violation");
+  }
+
+  @Test
+  void createBook() throws Exception {
+    var isbn = "1111111111";
+    var title = "My first book";
+    var author = "Birgit Kratz";
+    var description = "A best selling story and must read.";
+
+    when(bookServiceMock.createBook(any(Book.class))).thenReturn(new Book());
+
+    var mvcResult = mockMvc.perform(post("/book")
+            .content("""
+                {
+                    "isbn": "%s",
+                    "title": "%s",
+                    "author": "%s",
+                    "description": "%s"
+                }""".formatted(isbn, title, author, description))
+            .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andReturn();
+
+    var responseBody = mvcResult.getResponse().getContentAsString();
+    Book book = objectMapper.readValue(responseBody, new TypeReference<>() {});
+
+    assertThat(book).isNotNull();
+
+    verify(bookServiceMock).createBook(any(Book.class));
   }
 }
