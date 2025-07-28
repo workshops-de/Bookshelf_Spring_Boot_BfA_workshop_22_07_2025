@@ -6,9 +6,9 @@ import java.util.List;
 
 @Service
 public class BookService {
-  private final BookRepository bookRepository;
+  private final BookJdbcRepository bookRepository;
 
-  public BookService(BookRepository bookRepository) {
+  public BookService(BookJdbcRepository bookRepository) {
     this.bookRepository = bookRepository;
   }
 

@@ -1,14 +1,40 @@
 package de.workshops.bookshelf.books;
 
-import lombok.Data;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import java.util.Objects;
 
+@Entity
 public class Book {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  @Column
   private String title;
+
+  @Column(length =  1024)
   private String description;
+
+  @Column
   private String author;
+
+  @Column(nullable = false)
   private String isbn;
+
+
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public Long getId() {
+    return id;
+  }
 
   public String getTitle() {
     return title;

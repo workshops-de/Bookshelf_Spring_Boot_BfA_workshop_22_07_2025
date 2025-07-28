@@ -11,3 +11,21 @@ swagger:
   license:
     name: 'MIT License'
     url: 'http://example.com'
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bookshelf
+    username: birgit
+    password: geheim
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create-drop
+    generate-ddl: true
+    defer-datasource-initialization: true
+#  h2:
+#    console:
+#      enabled: true
+  sql:
+    init:
+      mode: always
