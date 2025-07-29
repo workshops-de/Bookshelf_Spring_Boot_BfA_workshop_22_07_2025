@@ -15,17 +15,29 @@ swagger:
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/bookshelf
+#    url: jdbc:h2:mem:bookshelf
     username: birgit
     password: geheim
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: create-drop
-    generate-ddl: true
-    defer-datasource-initialization: true
+      ddl-auto: validate
+#    generate-ddl: true
+#    defer-datasource-initialization: true
 #  h2:
 #    console:
 #      enabled: true
   sql:
     init:
       mode: always
+
+  security:
+    user:
+      name: birgit
+      password: geheim
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,liquibase"

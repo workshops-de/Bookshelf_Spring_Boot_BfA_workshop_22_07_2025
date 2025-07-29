@@ -2,13 +2,16 @@ package de.workshops.bookshelf.books;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.workshops.bookshelf.MethodSecurityConfiguration;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -20,6 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -27,6 +31,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = BookRestController.class)
+@Import(MethodSecurityConfiguration.class)
+@WithMockUser
 class BookRestControllerMockMvcWithMockitoTest {
 
   @Autowired
@@ -109,6 +115,7 @@ class BookRestControllerMockMvcWithMockitoTest {
   }
 
   @Test
+  @WithMockUser(roles={"ADMIN"})
   void createBook() throws Exception {
     var isbn = "1111111111";
     var title = "My first book";
@@ -125,7 +132,8 @@ class BookRestControllerMockMvcWithMockitoTest {
                     "author": "%s",
                     "description": "%s"
                 }""".formatted(isbn, title, author, description))
-            .contentType(MediaType.APPLICATION_JSON))
+            .contentType(MediaType.APPLICATION_JSON)
+            .with(csrf()))
         .andDo(print())
         .andExpect(status().isOk())
         .andReturn();
@@ -136,5 +144,26 @@ class BookRestControllerMockMvcWithMockitoTest {
     assertThat(book).isNotNull();
 
     verify(bookServiceMock).createBook(any(Book.class));
+  }
+
+  @Test
+  void createBook_wrongRole_forbidden() throws Exception {
+    var isbn = "1111111111";
+    var title = "My first book";
+    var author = "Birgit Kratz";
+    var description = "A best selling story and must read.";
+
+    mockMvc.perform(post("/book")
+            .content("""
+                {
+                    "isbn": "%s",
+                    "title": "%s",
+                    "author": "%s",
+                    "description": "%s"
+                }""".formatted(isbn, title, author, description))
+            .contentType(MediaType.APPLICATION_JSON)
+            .with(csrf()))
+        .andDo(print())
+        .andExpect(status().isForbidden());
   }
 }

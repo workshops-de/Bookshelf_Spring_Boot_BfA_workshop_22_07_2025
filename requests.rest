@@ -1,20 +1,36 @@
 ###
 GET http://localhost:8080/book
+Authorization: Basic birgit geheim
 
 ###
 @isbn =978-0201633611834756348756
 GET http://localhost:8080/book/{{isbn}}
+Authorization: Basic birgit geheim
 
 ###
 @author=Rob
 GET http://localhost:8080/book?author={{author}}
+Authorization: Basic birgit geheim
 
 ###
 POST http://localhost:8080/book/search
+Authorization: Basic birgit geheim
 Content-Type: application/json
 
 {
   "isbn": "978-0201633610",
   "author": "Rob",
   "other": "something else"
+}
+
+###
+POST http://localhost:8080/book
+Authorization: Basic admin admin
+Content-Type: application/json
+
+{
+  "isbn": "1111111111",
+  "title": "ksfjdhskdhf",
+  "author": "dskfhskdfh",
+  "description": "skdfhskdhjf"
 }
